@@ -14,6 +14,8 @@ pipeline {
    
    parameters {
       string(name: 'USERNAME_ACC', defaultValue: 'conan736', description: 'Username of DockerHub')
+      string(name: 'EMAIL_SENDER', defaultValue: 'conanedogawa736@gmail.com', description: 'Email from sender')
+      string(name: 'EMAIL_RECEIVER', defaultValue: 'conanedogawa736@gmail.com', description: 'Email to receiver')
    }
 
    //It will trigger an auto build at 9.15 PM every day
@@ -62,9 +64,13 @@ pipeline {
          steps {
             sh """ sleep 10
             docker rm -f flask_from_jenkins
-            python3 --version
             """
          }
-      }      
+      }
+      stage('Sending Email Notification') {
+         steps {
+            sh "python3 py_ses.py ${params.EMAIL_SENDER} ${params.EMAIL_RECEIVER}"
+         }
+      } 
    }
 }
