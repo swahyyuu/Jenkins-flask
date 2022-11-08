@@ -62,7 +62,7 @@ pipeline {
          steps {
             sh """ sleep 10
             docker rm -f flask_from_jenkins
-            echo python3 --version
+            python3 --version
             """
          }
       }      
