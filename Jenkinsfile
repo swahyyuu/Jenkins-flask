@@ -66,11 +66,6 @@ pipeline {
             docker rm -f flask_from_jenkins
             """
          }
-      }
-      stage('Sending Email Notification') {
-         steps {
-            sh "python3 py_ses.py ${params.EMAIL_SENDER} ${params.EMAIL_RECEIVER}"
-         }
       } 
    }
 }
