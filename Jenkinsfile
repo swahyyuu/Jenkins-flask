@@ -23,12 +23,10 @@ pipeline {
    }
 
    stages {
-      script {
-         modules.first = load "func.groovy"
-      }
       stage('Docker Build Image') {
          steps {
          script {
+            modules.first = load "func.groovy"
             modules.first.notifyBuild()
          }            
             sh "docker build -t ${params.USERNAME_ACC}/jenkins:2.0 ."           
