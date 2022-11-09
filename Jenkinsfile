@@ -9,7 +9,6 @@ script {
          ])
       ]
    )
-   modules.first = load "func.groovy"
 }
 
 pipeline {
@@ -24,6 +23,9 @@ pipeline {
    }
 
    stages {
+      script {
+         modules.first = load "func.groovy"
+      }
       stage('Docker Build Image') {
          steps {
          script {
