@@ -68,7 +68,9 @@ pipeline {
             sh """ sleep 5
             docker rm -f flask_from_jenkins
             """
-            hiveArt
+            script { 
+               currentBuild.result = 'FAILED'
+            }
          }
       } 
    }
