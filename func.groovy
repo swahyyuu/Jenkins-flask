@@ -22,7 +22,7 @@ def notifyBuild (String buildStatus = 'STARTED') {
 }
 
 def dateFormatted () {
-  dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss")
+  dateFormat = new SimpleDateFormat("yyyy-MM-dd'|'HH:mm:ss")
   date = new Date()
   formattedDate = dateFormat.format(date)
   return formattedDate
