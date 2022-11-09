@@ -24,11 +24,11 @@ pipeline {
 
    stages {
       stage('Docker Build Image') {
-         when { branch 'main' }
+         when { branch 'main' } 
+         steps {
          script {
             notifyBuild('STARTED')
-         }         
-         steps {
+         }            
             sh "docker build -t ${params.USERNAME_ACC}/jenkins:2.0 ."           
          }
       }
