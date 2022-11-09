@@ -71,9 +71,9 @@ pipeline {
    post {
       always {
          script {
-            if (currentBuild.result = 'SUCCESS') {
+            if (currentBuild.result == 'SUCCESS') {
                notifyBuild(currentBuild.result)
-            } else if (currentBuild.result = 'FAILED') {
+            } else if (currentBuild.result == 'FAILED') {
                notifyBuild(currentBuild.result)
             } else {
                echo 'Unstable Build....'
