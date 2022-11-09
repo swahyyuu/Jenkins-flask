@@ -13,7 +13,7 @@ script {
 
 pipeline {
    agent any
-   
+   modules.first = load "func.groovy"
    parameters {
       string(name: 'USERNAME_ACC', defaultValue: 'conan736', description: 'Username of DockerHub')
    }
@@ -27,7 +27,6 @@ pipeline {
       stage('Docker Build Image') {
          steps {
          script {
-            modules.first = load "func.groovy"
             modules.first.notifyBuild()
          }            
             sh "docker build -t ${params.USERNAME_ACC}/jenkins:2.0 ."           
@@ -68,9 +67,6 @@ pipeline {
             sh """ sleep 5
             docker rm -f flask_from_jenkins
             """
-            script { 
-               currentBuild.result = 'FAILED'
-            }
          }
       } 
    }
