@@ -79,10 +79,8 @@ pipeline {
          script {
             if (currentBuild.result == 'SUCCESS') {
                modules.first.notifyBuild(currentBuild.result)
-            } else if (currentBuild.result == 'FAILED') {
-               modules.first.notifyBuild(currentBuild.result)
             } else {
-               echo 'Unstable Build....'
+               modules.first.notifyBuild(currentBuild.result)
             }
          }
       }
