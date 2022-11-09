@@ -23,7 +23,9 @@ pipeline {
    }
 
    stages {
-      notifyBuild('STARTED')
+      script {
+         notifyBuild('STARTED')
+      }
       stage('Docker Build Image') {
          when { branch 'main' }
          steps {
