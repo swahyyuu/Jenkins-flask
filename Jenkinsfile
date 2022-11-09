@@ -3,7 +3,8 @@ script {
    properties(
       [
          parameters([
-            string(defaultValue: 'development', name: 'ENV')
+            string(defaultValue: 'development', name: 'ENV'),
+            string(defaultValue: 'channel_name', name: 'CHANNEL_NAME')
          ])
       ]
    )
@@ -14,8 +15,6 @@ pipeline {
    
    parameters {
       string(name: 'USERNAME_ACC', defaultValue: 'conan736', description: 'Username of DockerHub')
-      string(name: 'EMAIL_SENDER', defaultValue: 'conanedogawa736@gmail.com', description: 'Email from sender')
-      string(name: 'EMAIL_RECEIVER', defaultValue: 'conanedogawa736@gmail.com', description: 'Email to receiver')
    }
 
    //It will trigger an auto build at 9.15 PM every day
@@ -24,6 +23,7 @@ pipeline {
    }
 
    stages {
+      notifyBuild('STARTED')
       stage('Docker Build Image') {
          when { branch 'main' }
          steps {
@@ -68,4 +68,34 @@ pipeline {
          }
       } 
    }
+   post {
+      always {
+         script {
+            if (currentBuild.result = 'SUCCESS') {
+               notifyBuild(currentBuild.result)
+            } else if (currentBuild.result = 'FAILED') {
+               notifyBuild(currentBuild.result)
+            } else {
+               echo 'Unstable Build....'
+            }
+         }
+      }
+   }
+}
+
+def notifyBuild (String buildStatus = 'STARTED') {
+   buildStatus = buildStatus ?: 'SUCCESS'
+
+   def colorCode = '#FF0000'
+   def summary = "${buildStatus} : Job Name '${env.JOB_NAME} | Build Number [${env.BUILD_NUMBER}] | URL : ${env.BUILD_URL}'"
+
+   if (buildStatus == 'STARTED') {
+      colorCode = '#FFFF00'
+   } else if (buildStatus == 'SUCCESS') {
+      colorCode = '#00FF00'
+   } else {
+      colorCode = '#FF0000'
+   }
+
+   slackSend (color: colorCode, channel: params.CHANNEL_NAME, message: summary)
 }
