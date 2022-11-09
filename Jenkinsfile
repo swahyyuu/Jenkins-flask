@@ -67,8 +67,8 @@ pipeline {
          steps {
             sh """ sleep 5
             docker rm -f flask_from_jenkins
-            docker rm -f wkwkwkwk
             """
+            hiveArt
          }
       } 
    }
