@@ -9,11 +9,11 @@ script {
          ])
       ]
    )
+   modules.first = load "func.groovy"
 }
 
 pipeline {
    agent any
-   modules.first = load "func.groovy"
    parameters {
       string(name: 'USERNAME_ACC', defaultValue: 'conan736', description: 'Username of DockerHub')
    }
