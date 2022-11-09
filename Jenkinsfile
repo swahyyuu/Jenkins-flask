@@ -1,4 +1,5 @@
 #!groovy
+Map modules =  [:]
 script {
    properties(
       [
@@ -26,7 +27,8 @@ pipeline {
       stage('Docker Build Image') {
          steps {
          script {
-            notifyBuild('STARTED')
+            modules.first = load "func.groovy"
+            modules.first.notifyBuild()
          }            
             sh "docker build -t ${params.USERNAME_ACC}/jenkins:2.0 ."           
          }
@@ -63,7 +65,7 @@ pipeline {
       }
       stage('Remove Deployed Container in Localhost') {
          steps {
-            sh """ sleep 10
+            sh """ sleep 5
             docker rm -f flask_from_jenkins
             """
          }
@@ -73,30 +75,13 @@ pipeline {
       always {
          script {
             if (currentBuild.result == 'SUCCESS') {
-               notifyBuild(currentBuild.result)
+               modules.first.notifyBuild(currentBuild.result)
             } else if (currentBuild.result == 'FAILED') {
-               notifyBuild(currentBuild.result)
+               modules.first.notifyBuild(currentBuild.result)
             } else {
                echo 'Unstable Build....'
             }
          }
       }
    }
-}
-
-def notifyBuild (String buildStatus = 'STARTED') {
-   buildStatus = buildStatus ?: 'SUCCESS'
-
-   def colorCode = '#FF0000'
-   def summary = "${buildStatus} : Job Name '${env.JOB_NAME} | Build Number [${env.BUILD_NUMBER}] | URL : ${env.BUILD_URL}'"
-
-   if (buildStatus == 'STARTED') {
-      colorCode = '#FFFF00'
-   } else if (buildStatus == 'SUCCESS') {
-      colorCode = '#00FF00'
-   } else {
-      colorCode = '#FF0000'
-   }
-
-   slackSend (color: colorCode, channel: params.CHANNEL_NAME, message: summary)
 }
