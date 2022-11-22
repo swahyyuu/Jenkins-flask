@@ -1,11 +1,11 @@
 #!groovy
-Map modules =  [:]
+Map modules = [:]
 script {
    properties(
       [
          parameters([
             string(defaultValue: 'development', name: 'ENV'),
-            string(defaultValue: 'channel_name', name: 'CHANNEL_NAME')
+            string(defaultValue: 'learning-cicd', name: 'CHANNEL_NAME')
          ])
       ]
    )
