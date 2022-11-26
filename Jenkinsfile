@@ -19,7 +19,7 @@ pipeline {
 
    //It will trigger an auto build at 9.15 PM every day
    triggers {
-      cron('15 21 * * * ')
+      cron('0 0 * * * ')
    }
 
    stages {
