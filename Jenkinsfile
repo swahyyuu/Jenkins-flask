@@ -78,6 +78,7 @@ pipeline {
             } else {
                modules.first.notifyBuild(currentBuild.result)
             }
+            cleanWs()
          }
       }
    }
